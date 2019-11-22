@@ -1,0 +1,2 @@
+# PartitionedIntegratorsforThermodynamicParameterizationOfNNs
+Supplement code to our Foundations of Data Science Paper
