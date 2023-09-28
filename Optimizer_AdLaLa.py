@@ -77,7 +77,8 @@ class AdLaLa(Optimizer):
                     # where R is a standard normal random vector with iid components
                     shapep = p.size()
                     D = sigA*np.sqrt(lr/2)
-                    Mom.add_(D*torch.cuda.FloatTensor(*shapep).normal_())
+                    Mom.add_(D*torch.FloatTensor(*shapep).normal_())
+                    # used to be `torch.cuda.FloatTensor`
                     
                     # E-step:update xi = xi + eps*lr*(Mom^T Mom - N*T1), where N = # of degrees of freedom
                     if num == 0: # For the weights
@@ -89,7 +90,7 @@ class AdLaLa(Optimizer):
                     xi.add_(F*E) 
 
                     # D-step: update momenta Mom = Mom + D*R, D = sig*sqrt(lr/2)
-                    Mom.add_(D*torch.cuda.FloatTensor(*shapep).normal_()) 
+                    Mom.add_(D*torch.FloatTensor(*shapep).normal_()) 
                     
                     # C-step: update momenta Mom = exp(-xi*lr/2)*Mom
                     C = torch.exp(-xi*lr/2)
@@ -110,7 +111,7 @@ class AdLaLa(Optimizer):
                     # O-step:  update momenta Mom = cgam*Mom + dgam*R,
                     # where R is a standard normal random vector with iid components and cgam and dgam are defined in main file
                     shapep = p.size()
-                    Mom.mul_(cgamma).add_(torch.cuda.FloatTensor(*shapep).normal_(),alpha=dgamma)
+                    Mom.mul_(cgamma).add_(torch.FloatTensor(*shapep).normal_(),alpha=dgamma)
 
                     # A-step:  update parameters p = p + (lr/2)*Mom,
                     p.add_(Mom*lr/2)
